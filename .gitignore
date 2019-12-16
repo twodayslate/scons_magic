@@ -3,3 +3,5 @@ export/
 build/
 __pycache__
 *.pyc
+*.o
+program

@@ -3,9 +3,15 @@ env = Environment()
 
 Import('self')
 
-print("Parsing '%s'" % self.name)
+print("Parsing '%s' with options:\n\t%s" % (self.name, self.options))
 
 Includes('common', env)
+
+if 'linux' in self.options["platform"]:
+	env.Append(LINKFLAGS='-rdynamic')
+	env.AppendUnique(CPPDEFINES={'FLAGVALUE': 1})
+else:
+	env.AppendUnique(CPPDEFINES={'FLAGVALUE': 666})
 
 p = env.Program('program', Glob('*.c'), libs=['common'])
 
