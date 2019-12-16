@@ -13,4 +13,4 @@ Build multiple versions
 scons program "program#platform@linux"
 ```
 
-When platform@linux is set the program will act differently
+When `platform@linux` is set the program will act differently. 
