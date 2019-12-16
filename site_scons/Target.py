@@ -11,6 +11,32 @@ defaultOptions = {
     "docs": "True",
 }
 
+
+def PARSE_TARGET(target):
+    print(target, type(target))
+    try:
+        s = target.split("#")
+        key = s[0]
+        name = key
+        values = {}
+
+        s = s[1:]
+        print("s", s)
+        if s:
+            for sv in s:
+                svv = sv.split("@")
+                if len(svv) == 1:
+                    values[svv[0]] = "True"
+                else:
+                    values[svv[0]] = svv[1]
+        options = values
+        print("doen parsing")
+    except:
+        name = target
+        options = None
+
+    return Target(name=name, options=options)
+
 class Target:
     def __init__(self, name, options=None):
         global __defaultOptions

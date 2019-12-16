@@ -1,16 +1,10 @@
-# if COMMAND_LINE_TARGETS:
-# 	Default(SConscript(dirs=COMMAND_LINE_TARGETS))
-# else:
-# 	Default(SConscript(dirs=['program']))
+import os
 
-CustomInit()
 
-if not MY_CUSTOM_TARGETS:
-	MY_CUSTOM_TARGETS.append(Target('program'))
+for target in COMMAND_LINE_TARGETS:
+	self = PARSE_TARGET(target)
+	Default(SConscript(dirs=['program'], variant_dir=os.path.join(GetLaunchDir(), target), exports=['self']))
 
-print(MY_CUSTOM_TARGETS)
-
-for target in MY_CUSTOM_TARGETS:
-	print("Setting '%s' SConscript" % target.name)
-	BUILD_TARGETS.append(target.name)
-	Default(target.SConscript())
+if not COMMAND_LINE_TARGETS:
+	self = PARSE_TARGET('program')
+	Default(SConscript(dirs=['program'], variant_dir='build/program', exports=['self']))

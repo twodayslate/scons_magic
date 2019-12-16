@@ -2,18 +2,17 @@ import os
 env = Environment()
 
 Import('self')
-
-print("Parsing '%s' with options:\n\t%s" % (self.name, self.options))
+print("Parsing '%s' with options:\n\t%s" % (self, self.options))
 
 Includes('common', env)
 
 if 'linux' in self.options["platform"]:
-	env.Append(LINKFLAGS='-rdynamic')
-	env.AppendUnique(CPPDEFINES={'FLAGVALUE': 1})
+    env.Append(LINKFLAGS='-rdynamic')
+    env.AppendUnique(CPPDEFINES={'FLAGVALUE': 1})
 else:
-	env.AppendUnique(CPPDEFINES={'FLAGVALUE': 666})
+    env.AppendUnique(CPPDEFINES={'FLAGVALUE': 666})
 
-p = env.Program(self.path(), Glob('*.c'), libs=['common'])
+p = env.Program('program', Glob('*.c'), libs=['common'])
 
 i = env.Install(os.path.join(GetLaunchDir(), 'export'), p)
 Default(i)
