@@ -21,7 +21,6 @@ def PARSE_TARGET(target):
         values = {}
 
         s = s[1:]
-        print("s", s)
         if s:
             for sv in s:
                 svv = sv.split("@")
@@ -30,7 +29,6 @@ def PARSE_TARGET(target):
                 else:
                     values[svv[0]] = svv[1]
         options = values
-        print("doen parsing")
     except:
         name = target
         options = None

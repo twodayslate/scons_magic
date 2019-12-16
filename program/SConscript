@@ -1,10 +1,11 @@
 import os
-env = Environment()
+env = SpecialEnvironment()
 
 Import('self')
 print("Parsing '%s' with options:\n\t%s" % (self, self.options))
 
-Includes('common', env)
+# Includes('common', env)
+env.Include(self, 'common')
 
 if 'linux' in self.options["platform"]:
     env.Append(LINKFLAGS='-rdynamic')
@@ -14,6 +15,6 @@ else:
 
 p = env.Program('program', Glob('*.c'), libs=['common'])
 
-i = env.Install(os.path.join(GetLaunchDir(), 'export'), p)
+i = env.Install(os.path.join('#/export', self.path()), p)
 Default(i)
-Return('p')
+Return('i')
