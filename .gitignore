@@ -1,0 +1,5 @@
+.sconsign.dblite
+export/
+build/
+__pycache__
+*.pyc

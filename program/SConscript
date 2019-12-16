@@ -1,6 +1,10 @@
 import os
 env = Environment()
 
+Import('self')
+
+print("Parsing '%s'" % self.name)
+
 Includes('common', env)
 
 p = env.Program('program', Glob('*.c'), libs=['common'])

@@ -48,5 +48,11 @@ class Target:
         except:
             return fallback
 
-    def SConscript(self, exports=''):
-        return SCons.Script.SConscript(dirs=[self.name], name="SConscript", exports=exports)
+    def SConscript(self, exports=None):
+        if exports == None:
+            exports = []
+        if isinstance(exports, list):
+            exports.append('self')
+        elif isinstance(exports, str):
+            exports = exports + ' self'
+        return SCons.Script.SConscript(os.path.join(SCons.Script.GetLaunchDir(), self.name, 'SConscript'), exports=exports)
