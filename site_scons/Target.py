@@ -13,7 +13,6 @@ defaultOptions = {
 
 
 def PARSE_TARGET(target):
-    print(target, type(target))
     try:
         s = target.split("#")
         key = s[0]
