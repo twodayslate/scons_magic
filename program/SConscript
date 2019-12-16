@@ -13,7 +13,7 @@ if 'linux' in self.options["platform"]:
 else:
 	env.AppendUnique(CPPDEFINES={'FLAGVALUE': 666})
 
-p = env.Program('program', Glob('*.c'), libs=['common'])
+p = env.Program(self.path(), Glob('*.c'), libs=['common'])
 
 i = env.Install(os.path.join(GetLaunchDir(), 'export'), p)
 Default(i)
