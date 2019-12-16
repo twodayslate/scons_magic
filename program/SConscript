@@ -1,0 +1,10 @@
+import os
+env = Environment()
+
+Includes('common', env)
+
+p = env.Program('program', Glob('*.c'), libs=['common'])
+
+i = env.Install(os.path.join(GetLaunchDir(), 'export'), p)
+Default(i)
+Return('p')
