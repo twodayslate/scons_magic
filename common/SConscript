@@ -1,9 +1,10 @@
-env = Environment()
-
-Import('self')
-
 # put common in the parent build folder and not common build folder
-env.Include(self.parent, 'common')
+try:
+	Import('self')
+	Import('env')
+except:
+	env = SpecialEnvironment()
+	env.Include(self, 'common')
 
 if 'linux' in self.options['platform']:
 	env.Append(CPPDEFINES={'FLAGVALUE': 666})

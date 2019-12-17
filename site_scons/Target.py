@@ -11,7 +11,6 @@ defaultOptions = {
     "docs": "True",
 }
 
-
 def PARSE_TARGET(target):
     try:
         s = target.split("+")
@@ -60,7 +59,16 @@ class Target:
             val = key + "@" + self.options[key]
             val = val.lower().replace("/", '')
             ops.append(val)
-        return "#".join(ops)
+        return "+".join(ops)
+
+    def variantDir(self):
+        '''
+        The build directory
+        '''
+        return os.path.join("#/build", self.path())
+
+    def exportDir(self):
+        return os.path.join("#/export", self.path())
 
     def hasOption(self, option):
         try:

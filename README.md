@@ -1,16 +1,18 @@
-Build `program` (default)
+## SCons Magic
+
+#### Build `program` (default)
 ```
 scons
 ```
 
-Build `program`
+#### Build `program`
 ```
-scons build/program
+scons program
 ```
 
-Build multiple versions of `program`
+#### Build multiple versions of `program`
 ```
-scons build/program "build/program+platform@linux" "build/program+option@value"
+scons program program+platform@linux program+option@value
 ```
 
 When `platform@linux` is set the program will act differently - same with `option@value`! Try it out/experiment with different options.

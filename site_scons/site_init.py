@@ -74,6 +74,7 @@ def SpecialEnvironment():
         newTarget = Target(name=_source, options=_target.options)
         newTarget.parent = _target
         self = newTarget
+        self.env = _target.env.Clone()
         i = SConscript(dirs=[os.path.join("#", _source)], variant_dir=os.path.join('#/build', _target.path(), _source), exports=['self'])
         return i
 

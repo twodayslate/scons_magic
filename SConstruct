@@ -3,10 +3,9 @@ import os
 
 for target in COMMAND_LINE_TARGETS:
 	self = PARSE_TARGET(target)
-	path = os.path.join('#/build', self.path())
-	Default(SConscript(dirs=['program'], variant_dir=path, exports=['self']))
+	SConscript(dirs=[self.name], variant_dir=self.variantDir(), exports=['self'])
 
+# Set the default behavior
 if not COMMAND_LINE_TARGETS:
 	self = PARSE_TARGET('program')
-	path = os.path.join('#/build', self.path())
-	Default(SConscript(dirs=['program'], variant_dir=path, exports=['self']))
+	Default(SConscript(dirs=[self.name], variant_dir=self.variantDir(), exports=['self']))
