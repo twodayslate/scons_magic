@@ -28,7 +28,7 @@ def SpecialGlob(target, path, inFolder=''):
             secondPath = secondPath.lower().replace('/', '')
             if secondPath == firstPath:
                 continue
-            lookupFolder('#'.join([firstPath, secondPath]))
+            lookupFolder('+'.join([firstPath, secondPath]))
             for thirdKey in target.options.keys():
                 thirdPath = thirdKey + "@" + target.options[thirdKey]
                 thirdPath = thirdPath.lower().replace('/', '')
@@ -36,7 +36,7 @@ def SpecialGlob(target, path, inFolder=''):
                     continue
                 if thirdPath == firstPath:
                     continue
-                lookupFolder('#'.join([firstPath, secondPath, thirdPath]))
+                lookupFolder('+'.join([firstPath, secondPath, thirdPath]))
     print("files for ", target.name, ":")
     for f in files:
         print("\t", f.path)

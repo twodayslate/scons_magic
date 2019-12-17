@@ -14,7 +14,7 @@ defaultOptions = {
 
 def PARSE_TARGET(target):
     try:
-        s = target.split("#")
+        s = target.split("+")
         key = s[0]
         name = key
         values = {}

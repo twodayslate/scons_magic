@@ -1,7 +1,7 @@
 #ifndef FILE_H
 #define FILE_H
 
-#import <stdio.h>
+#include <stdio.h>
 
 void HelloWorld(void);
 
