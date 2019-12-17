@@ -24,4 +24,16 @@ def SpecialEnvironment():
 
     AddMethod(Environment, Include)
 
+    def ImportLibrary(
+        _env, _target, _source, *args, **kwargs
+    ):
+        _env.Include(_target, _source, *args, **kwargs)
+        newTarget = Target(name=_source, options=_target.options)
+        newTarget.parent = _target
+        self = newTarget
+        i = SConscript(dirs=[os.path.join("#", _source)], variant_dir=os.path.join('#/build', _target.path(), _source), exports=['self'])
+        return i
+
+    AddMethod(Environment, ImportLibrary)
+
     return env

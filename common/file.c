@@ -1,5 +1,5 @@
 #include <common/file.h>
 
 void HelloWorld(void) {
-	printf("Hello World\n");
+	printf("Hello World %d\n", FLAGVALUE);
 }

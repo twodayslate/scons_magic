@@ -1,3 +1,13 @@
 env = Environment()
 
-env.Library('common', Glob('*.c'))
+Import('self')
+env.Include(self, 'common')
+
+if 'linux' in self.options['platform']:
+	env.Append(CPPDEFINES={'FLAGVALUE': 666})
+else:
+	env.Append(CPPDEFINES={'FLAGVALUE': 1})
+
+library = env.Library('common', Glob('*.c'))
+
+Return('library')

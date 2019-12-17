@@ -5,15 +5,12 @@ Import('self')
 print("Parsing '%s' with options:\n\t%s" % (self, self.options))
 
 # Includes('common', env)
-env.Include(self, 'common')
+lib = env.ImportLibrary(self, 'common')
 
 if 'linux' in self.options["platform"]:
     env.Append(LINKFLAGS='-rdynamic')
-    env.AppendUnique(CPPDEFINES={'FLAGVALUE': 1})
-else:
-    env.AppendUnique(CPPDEFINES={'FLAGVALUE': 666})
 
-p = env.Program('program', Glob('*.c'), libs=['common'])
+p = env.Program('program', Glob('*.c'), LIBS=[lib])
 
 i = env.Install(os.path.join('#/export', self.path()), p)
 Default(i)
