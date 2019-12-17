@@ -7,4 +7,4 @@ for target in COMMAND_LINE_TARGETS:
 
 if not COMMAND_LINE_TARGETS:
 	self = PARSE_TARGET('program')
-	Default(SConscript(dirs=['program'], variant_dir='build/program', exports=['self']))
+	Default(SConscript(dirs=['program'], variant_dir='#/build/program', exports=['self']))

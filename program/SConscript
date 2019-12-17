@@ -12,6 +12,6 @@ if 'linux' in self.options["platform"]:
 
 p = env.Program('program', Glob('*.c'), LIBS=[lib])
 
-i = env.Install(os.path.join('#/export', self.path()), p)
-Default(i)
-Return('i')
+exported = env.Install(os.path.join('#/export', self.path()), p)
+Default(exported)
+Return('exported')
