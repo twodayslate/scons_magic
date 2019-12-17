@@ -10,6 +10,6 @@ if 'linux' in self.options['platform']:
 else:
 	env.Append(CPPDEFINES={'FLAGVALUE': 1})
 
-library = env.Library('common', Glob('*.c'))
+library = env.Library('common', SpecialGlob(self, '*.c'))
 
 Return('library')

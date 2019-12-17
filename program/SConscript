@@ -10,9 +10,10 @@ lib = env.ImportLibrary(self, 'common')
 if 'linux' in self.options["platform"]:
     env.Append(LINKFLAGS='-rdynamic')
 
-p = env.Program('program', Glob('*.c'), LIBS=[lib])
+p = env.Program('program', SpecialGlob(self, '*.c'), LIBS=[lib])
 
 exported = env.Install(os.path.join('#/export', self.path()), p)
 Default(exported)
-env.Alias(self.name, exported)
+env.Alias(os.path.join('#/build', self.path()), exported)
+env.Alias(self.originalName, exported)
 Return('exported')

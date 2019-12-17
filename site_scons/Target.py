@@ -32,7 +32,11 @@ def PARSE_TARGET(target):
         name = target
         options = None
 
-    return Target(name=name, options=options)
+
+
+    t = Target(name=name, options=options)
+    t.originalName = target
+    return t
 
 class Target:
     def __init__(self, name, options=None):
