@@ -14,4 +14,7 @@ p = env.Program('program', SpecialGlob(self, '*.c'), LIBS=[lib])
 
 exported = env.Install(self.export_dir(), p)
 Default(exported)
+env.Alias(os.path.join('build', self.path(), self.name), exported)
+env.Alias(os.path.join('build', self.path()), exported)
+env.Alias(self.path(), exported)
 Return('exported')

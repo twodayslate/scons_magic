@@ -5,7 +5,7 @@ import SCons
 
 
 class Target:
-    def __init__(self, name, platform, arch, bits, parent=None):
+    def __init__(self, name, platform=sys.platform, arch=platform.machine(), bits=platform.architecture()[0].replace('bits',''), parent=None):
         self.name = name
         self.platform = platform
         self.arch = arch

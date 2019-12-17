@@ -22,7 +22,7 @@ def SpecialGlob(target, path, inFolder=''):
     lookupFolder(os.path.join(target.platform))
     lookupFolder(os.path.join(target.platform, target.arch))
     lookupFolder(os.path.join(target.platform, target.arch, target.bits))
-    
+
     print("files for ", target.name, ":")
     for f in files:
         print("\t", f.path)
@@ -52,7 +52,7 @@ def SpecialEnvironment():
         _env.Include(_target, _source, *args, **kwargs)
         newTarget = Target(_source, _target.platform, _target.arch, _target.bits)
         newTarget.parent = _target
-        i = SConscript(dirs=[os.path.join("#", _source)], variant_dir=os.path.join('#/build', _target.path(), _source), exports={'self': newTarget})
+        i = SConscript(dirs=[os.path.join("#", _source)], variant_dir=os.path.join(_target.variant_dir(), _source), exports={'self': newTarget})
         return i
 
     AddMethod(Environment, ImportLibrary)

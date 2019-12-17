@@ -16,10 +16,10 @@ This will build one variant of `program` with the host options
 
 #### Build multiple versions of `program`
 ```
-scons ??? ??? ???
+scons program_darwin_x86_64_64 program_linux_arm_64
 ```
 
-This will build three different variants of `program`
+This will build different variants of `program`
 
 platform, arch, and bits are supported options. 
 
