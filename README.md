@@ -1,18 +1,18 @@
-Build /program (default)
+Build `program` (default)
 ```
 scons
 ```
 
-Build /program
+Build `program`
 ```
 scons build/program
 ```
 
-Build multiple versions
+Build multiple versions of `program`
 ```
 scons build/program "build/program#platform@linux" "build/program#option@value"
 ```
 
-When `platform@linux` is set the program will act differently - same with `option@value`!
+When `platform@linux` is set the program will act differently - same with `option@value`! Try it out/experiment with different options.
 
-The programs will be exported to export/
+The `program`s will be exported to `export/`. All build files should be contained inside `build/`
