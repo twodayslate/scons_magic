@@ -1,19 +1,27 @@
-Build `program` (default)
+## SCons Magic
+
+#### Build all `program`s (default)
 ```
 scons
 ```
 
-Build `program`
+This build all variants of `program`
+
+#### Build `program`
 ```
-scons build/program
+scons ???
 ```
 
-Build multiple versions of `program`
+This will build one variant of `program` with the host options
+
+#### Build multiple versions of `program`
 ```
-scons build/program "build/program+platform@linux" "build/program+option@value"
+scons ??? ??? ???
 ```
 
-When `platform@linux` is set the program will act differently - same with `option@value`! Try it out/experiment with different options.
+This will build three different variants of `program`
+
+platform, arch, and bits are supported options. 
 
 The `program`s will be exported to `export/`. All build files should be contained inside `build/`
 

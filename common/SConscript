@@ -2,8 +2,7 @@ env = Environment()
 
 Import('self')
 
-# put common in the parent build folder and not common build folder
-env.Include(self.parent, 'common')
+env.Include(self, 'common')
 
 if 'arm' in self.arch:
 	env.Append(CPPDEFINES={'FLAGVALUE': 666})
