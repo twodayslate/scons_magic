@@ -11,37 +11,10 @@ defaultOptions = {
     "docs": "True",
 }
 
-def PARSE_TARGET(target):
-    try:
-        s = target.split("+")
-        key = s[0]
-        name = key
-        values = {}
-
-        s = s[1:]
-        if s:
-            for sv in s:
-                svv = sv.split("@")
-                if len(svv) == 1:
-                    values[svv[0]] = "True"
-                else:
-                    values[svv[0]] = svv[1]
-        options = values
-    except:
-        name = target
-        options = None
-
-
-
-    t = Target(name=name, options=options)
-    t.originalName = target
-    return t
-
 class Target:
     def __init__(self, name, options=None):
         global __defaultOptions
         self.name = name
-
 
         df = defaultOptions
         if options:
@@ -53,7 +26,9 @@ class Target:
         else:
             self.options = defaultOptions
 
-    def path(self):
+        self.originalTargetString = None
+
+    def path(self) -> str:
         ops = [os.path.split(self.name)[1]]
         for key in self.options.keys():
             val = key + "@" + self.options[key]
@@ -61,11 +36,12 @@ class Target:
             ops.append(val)
         return "+".join(ops)
 
-    def variantDir(self):
+    def variantDir(self) -> str:
         '''
         The build directory
         '''
         return os.path.join("#/build", self.path())
+    buildDir = variantDir
 
     def exportDir(self):
         return os.path.join("#/export", self.path())
@@ -90,4 +66,30 @@ class Target:
             exports.append('self')
         elif isinstance(exports, str):
             exports = exports + ' self'
-        return SCons.Script.SConscript(os.path.join(SCons.Script.GetLaunchDir(), self.name, 'SConscript'), exports=exports)
+        elif isinstance(exports, dict):
+            exports['self'] = self
+        return SCons.Script.SConscript(os.path.join(SCons.Script.GetLaunchDir(), self.name, 'SConscript'), variant_dir=self.variantDir(), exports=exports)
+
+def PARSE_TARGET(target: str) -> Target:
+    try:
+        s = target.split("+")
+        key = s[0]
+        name = key
+        values = {}
+
+        s = s[1:]
+        if s:
+            for sv in s:
+                svv = sv.split("@")
+                if len(svv) == 1:
+                    values[svv[0]] = "True"
+                else:
+                    values[svv[0]] = svv[1]
+        options = values
+    except:
+        name = target
+        options = None
+
+    t = Target(name=name, options=options)
+    t.originalTargetString = target
+    return t

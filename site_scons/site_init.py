@@ -1,18 +1,18 @@
 from Target import *
+from Debug import *
 
 def SpecialGlob(target, path, inFolder=''):
     originalFiles = Glob(os.path.join(inFolder, path))
     files = originalFiles
 
     def lookupFolder(folder):
-        #print("looking in ", os.path.join(inFolder, folder, path))
+        DebugPrint("looking in ", os.path.join(inFolder, folder, path))
         newFiles = Glob(os.path.join(inFolder, folder, path))
         for f in newFiles:
-            print(f)
             replace = False
             for (i, orig_f) in enumerate(files):
                 if os.path.splitext(f.name)[0] == os.path.splitext(orig_f.name)[0]:
-                    print("Replacing", orig_f.name, "with", f.name)
+                    DebugPrint("Replacing", orig_f.name, "with", f.name)
                     files[i] = f
                     replace = True
                     break
@@ -37,14 +37,14 @@ def SpecialGlob(target, path, inFolder=''):
                 if thirdPath == firstPath:
                     continue
                 lookupFolder('+'.join([firstPath, secondPath, thirdPath]))
-    print("files for ", target.name, ":")
+    DebugPrint("files for ", target.name, ":")
     for f in files:
-        print("\t", f.path)
+        DebugPrint("\t", f.path)
     return files
-
 
 def SpecialEnvironment():
     env = Environment()
+
     def Include(
         _env, _target, _source, inFolder="includes/", *args, **kwargs
     ):
@@ -54,9 +54,9 @@ def SpecialEnvironment():
         basePath = os.path.join('#/build', _target.path(), "headers")
         path = os.path.join(basePath, _source)
 
-        print("header files for", _source, originPath, path, files)
+        DebugPrint("header files for", _source, originPath, path, files)
         for f in files:
-            print("\t", f.path)
+            DebugPrint("\t", f.path)
 
         i = _env.Install(path, files)
         Default(i)

@@ -2,7 +2,7 @@ import os
 env = SpecialEnvironment()
 
 Import('self')
-print("Parsing '%s' with options:\n\t%s" % (self.name, self.options))
+DebugPrint("Parsing '%s' with options:\n\t%s" % (self.name, self.options))
 
 self.env = env
 
@@ -16,7 +16,5 @@ p = env.Program('program', SpecialGlob(self, '*.c'), LIBS=[lib])
 
 exported = env.Install(os.path.join('#/export', self.path()), p)
 Default(exported)
-env.Alias(self.variantDir(), exported)
-env.Alias(self.exportDir(), exported)
-env.Alias(self.originalName, exported)
+env.Alias(self.originalTargetString, exported)
 Return('exported')

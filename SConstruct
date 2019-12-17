@@ -1,11 +1,10 @@
 import os
 
-
 for target in COMMAND_LINE_TARGETS:
-	self = PARSE_TARGET(target)
-	SConscript(dirs=[self.name], variant_dir=self.variantDir(), exports=['self'])
+	if target == 'clean':
+		Clean()
+	PARSE_TARGET(target).SConscript()
 
 # Set the default behavior
 if not COMMAND_LINE_TARGETS:
-	self = PARSE_TARGET('program')
-	Default(SConscript(dirs=[self.name], variant_dir=self.variantDir(), exports=['self']))
+	Default(PARSE_TARGET('program').SConscript())
