@@ -1,19 +1,17 @@
 import os
 env = SpecialEnvironment()
 
-Import('self')
-print("Parsing '%s' with options:\n\t%s" % (self.name, self.options))
+Import('*')
 
-# Includes('common', env)
+print("Parsing", self.name, ":", self.platform, self.arch, self.bits)
+
 lib = env.ImportLibrary(self, 'common')
 
-if 'linux' in self.options["platform"]:
+if 'x86_64' in self.arch:
     env.Append(LINKFLAGS='-rdynamic')
 
 p = env.Program('program', SpecialGlob(self, '*.c'), LIBS=[lib])
 
-exported = env.Install(os.path.join('#/export', self.path()), p)
+exported = env.Install(self.export_dir(), p)
 Default(exported)
-env.Alias(os.path.join('#/build', self.path()), exported)
-env.Alias(self.originalName, exported)
 Return('exported')

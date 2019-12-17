@@ -1,4 +1,4 @@
-#include <common/file.h>
+#include <file.h>
 
 int main() {
 	HelloWorld();

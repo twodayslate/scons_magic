@@ -19,24 +19,10 @@ def SpecialGlob(target, path, inFolder=''):
             if not replace:
                 files.append(f)
 
-    for firstKey in target.options.keys():
-        firstPath = firstKey + "@" + target.options[firstKey]
-        firstPath = firstPath.lower().replace('/', '')
-        lookupFolder(firstPath)
-        for secondKey in target.options.keys():
-            secondPath = secondKey + "@" + target.options[secondKey]
-            secondPath = secondPath.lower().replace('/', '')
-            if secondPath == firstPath:
-                continue
-            lookupFolder('+'.join([firstPath, secondPath]))
-            for thirdKey in target.options.keys():
-                thirdPath = thirdKey + "@" + target.options[thirdKey]
-                thirdPath = thirdPath.lower().replace('/', '')
-                if thirdPath == secondPath:
-                    continue
-                if thirdPath == firstPath:
-                    continue
-                lookupFolder('+'.join([firstPath, secondPath, thirdPath]))
+    lookupFolder(os.path.join(target.platform))
+    lookupFolder(os.path.join(target.platform, target.arch))
+    lookupFolder(os.path.join(target.platform, target.arch, target.bits))
+    
     print("files for ", target.name, ":")
     for f in files:
         print("\t", f.path)
@@ -49,21 +35,14 @@ def SpecialEnvironment():
         _env, _target, _source, inFolder="includes/", *args, **kwargs
     ):
         originPath = os.path.join(GetLaunchDir(), _source, inFolder)
-        files = SpecialGlob(_target, '*.h', inFolder=originPath)
 
-        basePath = os.path.join('#/build', _target.path(), "headers")
-        path = os.path.join(basePath, _source)
+        paths = [originPath]
 
-        print("header files for", _source, originPath, path, files)
-        for f in files:
-            print("\t", f.path)
+        paths = [os.path.join(GetLaunchDir(), _source, inFolder, _target.platform)] + paths
+        paths = [os.path.join(GetLaunchDir(), _source, inFolder, _target.platform, _target.arch)] + paths
+        paths = [os.path.join(GetLaunchDir(), _source, inFolder, _target.platform, _target.arch, _target.bits)] + paths
 
-        i = _env.Install(path, files)
-        Default(i)
-
-        _env.PrependUnique(CPPPATH=[basePath])
-
-        return i
+        _env.PrependUnique(CPPPATH=paths)
 
     AddMethod(Environment, Include)
 
@@ -71,10 +50,9 @@ def SpecialEnvironment():
         _env, _target, _source, *args, **kwargs
     ):
         _env.Include(_target, _source, *args, **kwargs)
-        newTarget = Target(name=_source, options=_target.options)
+        newTarget = Target(_source, _target.platform, _target.arch, _target.bits)
         newTarget.parent = _target
-        self = newTarget
-        i = SConscript(dirs=[os.path.join("#", _source)], variant_dir=os.path.join('#/build', _target.path(), _source), exports=['self'])
+        i = SConscript(dirs=[os.path.join("#", _source)], variant_dir=os.path.join('#/build', _target.path(), _source), exports={'self': newTarget})
         return i
 
     AddMethod(Environment, ImportLibrary)
