@@ -7,7 +7,7 @@ if 'arm' in self.arch:
 else:
     env.Append(CPPDEFINES={'FLAGVALUE': 1})
 
-library = env.Library('common', SpecialGlob(self, '*.c'))
+library = env.Library('common', SpecialGlob(self, '*.c'), CPPPATH=[Dir('includes')])
 env.Install("$EXPORT_DIR", library)
-env['COMMON_INCLUDES'] = ['include/$TARGET_PLATFORM/$TARGET_ARCH/$TARGET_BITS', 'include/$TARGET_PLATFORM/$TARGET_ARCH',
-                          'include/$TARGET_PLATFORM', 'include']
+env['COMMON_INCLUDES'] = [Dir('includes/$TARGET_PLATFORM/$TARGET_ARCH/$TARGET_BITS'), Dir('includes/$TARGET_PLATFORM/$TARGET_ARCH'),
+                          Dir('includes/$TARGET_PLATFORM'), Dir('includes')]

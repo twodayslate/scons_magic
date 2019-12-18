@@ -5,12 +5,10 @@ Import('*')
 
 print("Parsing", self.name, ":", self.platform, self.arch, self.bits)
 
-lib = env.ImportLibrary(self, 'common')
-
 if 'x86_64' in self.arch:
     env.Append(LINKFLAGS='-rdynamic')
 
-p = env.Program('program', SpecialGlob(self, '*.c'), LIBS=['common'], CPPPATH="$COMMON_CPPPATH")
+p = env.Program('program', SpecialGlob(self, '*.c'), LIBS=['common'], CPPPATH="$COMMON_INCLUDES")
 
 exported = env.Install("$EXPORT_DIR", p)
 Default(exported)
