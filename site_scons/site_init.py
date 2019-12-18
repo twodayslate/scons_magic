@@ -27,34 +27,3 @@ def SpecialGlob(target, path, inFolder=''):
     for f in files:
         print("\t", f.path)
     return files
-
-
-def SpecialEnvironment():
-    env = Environment()
-    def Include(
-        _env, _target, _source, inFolder="includes/", *args, **kwargs
-    ):
-        originPath = os.path.join(GetLaunchDir(), _source, inFolder)
-
-        paths = [originPath]
-
-        paths = [os.path.join(GetLaunchDir(), _source, inFolder, _target.platform)] + paths
-        paths = [os.path.join(GetLaunchDir(), _source, inFolder, _target.platform, _target.arch)] + paths
-        paths = [os.path.join(GetLaunchDir(), _source, inFolder, _target.platform, _target.arch, _target.bits)] + paths
-
-        _env.PrependUnique(CPPPATH=paths)
-
-    AddMethod(Environment, Include)
-
-    def ImportLibrary(
-        _env, _target, _source, *args, **kwargs
-    ):
-        _env.Include(_target, _source, *args, **kwargs)
-        newTarget = Target(_source, _target.platform, _target.arch, _target.bits)
-        newTarget.parent = _target
-        i = SConscript(dirs=[os.path.join("#", _source)], variant_dir=os.path.join(_target.variant_dir(), _source), exports={'self': newTarget})
-        return i
-
-    AddMethod(Environment, ImportLibrary)
-
-    return env

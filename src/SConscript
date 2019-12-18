@@ -1,5 +1,5 @@
 Import('self','env')
 
-env.SConscript('common/SConscript', exports={'self': self, 'env': env})
-env.SConscript('program/SConscript', exports={'self': self, 'env': env})
 
+i = env.SConscript('program/SConscript', exports={'self': self, 'env': env})
+Return('i')

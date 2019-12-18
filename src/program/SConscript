@@ -1,5 +1,6 @@
 import os
-env = SpecialEnvironment()
+import sys
+import platform
 
 Import('*')
 
@@ -8,11 +9,14 @@ print("Parsing", self.name, ":", self.platform, self.arch, self.bits)
 if 'x86_64' in self.arch:
     env.Append(LINKFLAGS='-rdynamic')
 
+env.SConscript('../common/SConscript', exports={'self': self, 'env': env})
+
 p = env.Program('program', SpecialGlob(self, '*.c'), LIBS=['common'], CPPPATH="$COMMON_INCLUDES")
 
 exported = env.Install("$EXPORT_DIR", p)
 Default(exported)
 env.Alias(os.path.join('build', self.path(), self.name), exported)
 env.Alias(os.path.join('build', self.path()), exported)
-env.Alias(self.path(), exported)
+if self.platform == sys.platform and self.arch == platform.machine() and self.bits == platform.architecture()[0].replace('bit',''):
+	env.Alias('build/program', exported)
 Return('exported')

@@ -1,7 +1,5 @@
 Import('self', 'env')
 
-env.Include(self, 'common')
-
 if 'arm' in self.arch:
     env.Append(CPPDEFINES={'FLAGVALUE': 666})
 else:
