@@ -1,8 +1,6 @@
 import os
 
 for target in COMMAND_LINE_TARGETS:
-	if target == 'clean':
-		Clean()
 	PARSE_TARGET(target).SConscript()
 
 # Set the default behavior
