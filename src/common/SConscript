@@ -1,0 +1,13 @@
+Import('self', 'env')
+
+env.Include(self, 'common')
+
+if 'arm' in self.arch:
+    env.Append(CPPDEFINES={'FLAGVALUE': 666})
+else:
+    env.Append(CPPDEFINES={'FLAGVALUE': 1})
+
+library = env.Library('common', SpecialGlob(self, '*.c'))
+env.Install("$EXPORT_DIR", library)
+env['COMMON_INCLUDES'] = ['include/$TARGET_PLATFORM/$TARGET_ARCH/$TARGET_BITS', 'include/$TARGET_PLATFORM/$TARGET_ARCH',
+                          'include/$TARGET_PLATFORM', 'include']

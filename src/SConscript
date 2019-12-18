@@ -1,0 +1,5 @@
+Import('self','env')
+
+env.SConscript('common/SConscript', exports={'self': target, 'env': env})
+env.SConscript('program/SConscript', exports={'self': target, 'env': env})
+
