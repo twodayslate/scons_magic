@@ -1,3 +1,9 @@
+for f in BUILD_TARGETS:
+	target = PARSE_TARGET(f)
+	env = Environment(TARGET_PLATFORM=target.platform, TARGET_ARCH=target.arch, TARGET_BITS=target.bits, VARIANT_DIR=target.variant_dir(),
+                      EXPORT_DIR=target.export_dir(), LIBPATH=['$EXPORT_DIR'])
+	SConscript('src/SConscript', variant_dir=target.variant_dir(), exports={'self': target, 'env': env})
+
 for plat in ['darwin', 'linux']:
 	for arch in ['i386','x86_64','arm']:
 		for bits in ['32','64']:
@@ -5,4 +11,3 @@ for plat in ['darwin', 'linux']:
 			env = Environment(TARGET_PLATFORM=target.platform, TARGET_ARCH=target.arch, TARGET_BITS=target.bits, VARIANT_DIR=target.variant_dir(),
                               EXPORT_DIR=target.export_dir(), LIBPATH=['$EXPORT_DIR'])
 			SConscript('src/SConscript', variant_dir=target.variant_dir(), exports={'self': target, 'env': env})
-
