@@ -1,0 +1,53 @@
+import SCons
+
+env = Environment()
+
+
+def writeEnv(target, source, env):
+	contents = ""
+
+	contents += 'env = DefaultEnvironment()\n'
+
+	for key in env.Dictionary().keys():
+		ignore = [
+			'BUILDERS',
+			'SCANNERS',
+			'TEMPFILE',
+			'Dir',
+			'Dirs',
+			'File',
+			'RDirs',
+			'PSPAWN',
+			'SPAWN',
+			'ESCAPE',
+			'SHLIBEMITTER',
+			'SMARTLINK',
+			'DShLibSonameGenerator',
+			'ZIPCOM',
+			'LINESEPARATOR',
+			'LINKCALLBACKS'
+		]
+		if key in ignore:
+			continue
+		if key[0] == "_":
+			continue
+		if isinstance(env[key], dict):
+			contents += "env['%s'] = %s\n" % (key, env[key])
+		elif isinstance(env[key], str):
+			contents += "env['%s'] = '%s'\n" % (key, env[key])
+		elif isinstance(env[key], list):
+			contents += "env['%s'] = %s\n" % (key, env[key])
+		elif isinstance(env[key], int):
+			contents += "env['%s'] = %s\n" % (key, env[key])
+		elif env[key] is None:
+			contents += "env['%s'] = %s\n" % (key, env[key])
+		elif isinstance(env[key], SCons.Util.CLVar):
+			contents += "env['%s'] = SCons.Util.CLVar(['%s'])\n" % (key, env[key])
+		else:
+			print("Unknown type '%s' with value '%s' for key '%s'" % (type(env[key]), env[key], key))
+			exit(0)
+
+		with open(target[0].abspath, 'w+') as f:
+			f.write(contents)
+
+env.AlwaysBuild(env.Command('env.py', [], [writeEnv]))

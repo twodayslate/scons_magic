@@ -4,6 +4,8 @@ env = SpecialEnvironment()
 Import('self')
 DebugPrint("Parsing '%s' with options:\n\t%s" % (self.name, self.options))
 
+print('debug', ARGUMENTS.get('debug', 0))
+
 self.env = env
 
 # Includes('common', env)
@@ -12,9 +14,9 @@ lib = env.ImportLibrary(self, 'common')
 if 'linux' in self.options["platform"]:
     env.Append(LINKFLAGS='-rdynamic')
 
-p = env.Program('program', SpecialGlob(self, '*.c'), LIBS=[lib])
+p = env.Program(self.uniqueName(), SpecialGlob(self, '*.c'), LIBS=[lib])
 
-exported = env.Install(os.path.join('#/export', self.path()), p)
+exported = env.InstallAs(os.path.join('#/export', self.path(), self.name), p)
 Default(exported)
 env.Alias(self.originalTargetString, exported)
 Return('exported')

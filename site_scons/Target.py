@@ -36,6 +36,9 @@ class Target:
             ops.append(val)
         return "+".join(ops)
 
+    def uniqueName(self) ->str:
+        return str(hex(hash(self.path()))).replace('0x', self.name+'_').replace('-','')
+
     def variantDir(self) -> str:
         '''
         The build directory
