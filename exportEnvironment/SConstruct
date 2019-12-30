@@ -10,6 +10,7 @@ def writeEnv(target, source, env):
 
 	for key in env.Dictionary().keys():
 		ignore = [
+			# generic
 			'BUILDERS',
 			'SCANNERS',
 			'TEMPFILE',
@@ -20,12 +21,16 @@ def writeEnv(target, source, env):
 			'PSPAWN',
 			'SPAWN',
 			'ESCAPE',
-			'SHLIBEMITTER',
+			'SHLIBEMITTER', # is this important?
 			'SMARTLINK',
-			'DShLibSonameGenerator',
 			'ZIPCOM',
 			'LINESEPARATOR',
-			'LINKCALLBACKS'
+			'LINKCALLBACKS',
+			#darwin
+			'DShLibSonameGenerator',
+			#linux
+			'ShLibSonameGenerator',
+			'LdModSonameGenerator'
 		]
 		if key in ignore:
 			continue
