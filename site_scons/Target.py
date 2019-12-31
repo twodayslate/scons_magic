@@ -2,6 +2,7 @@ import os
 import sys
 import platform
 import SCons
+import copy
 
 defaultOptions = {
     "platform": sys.platform,
@@ -16,7 +17,7 @@ class Target:
         global __defaultOptions
         self.name = name
 
-        df = defaultOptions
+        df = copy.deepcopy(defaultOptions)
         if options:
             self.options = options
             
@@ -24,7 +25,7 @@ class Target:
                 if key not in self.options:
                     self.options[key] = df[key]
         else:
-            self.options = defaultOptions
+            self.options = copy.deepcopy(defaultOptions)
 
         self.originalTargetString = None
 
