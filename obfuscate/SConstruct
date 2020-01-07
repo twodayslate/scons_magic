@@ -37,6 +37,6 @@ def genSources(target, source, env, for_signature):
 
     return actualTarget
 
-munge = env.Command('$SCONS_SOURCES', Glob('build/*.c'), [munge], SCONS_SOURCES=genSources)
+munge = env.Command('$SCONS_SOURCES', Glob('build/*.c'), munge, SCONS_SOURCES=genSources)
 
 p = env.Program('main', munge)
