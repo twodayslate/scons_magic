@@ -22,10 +22,8 @@ def modify(target, source, env):
                     else:
                         t.write(line)
 
-
-munge = env.Command('build/main.c', 'src/main.c', [modify])
-
 VariantDir('build', 'src')
 
-p = env.Program('main', 'build/main.c')
-Depends(p, munge)
+munge = env.Command(['build/munged_main.c'], 'build/main.c', [modify])
+
+p = env.Program('main', munge)
