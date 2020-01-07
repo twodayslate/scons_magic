@@ -2,8 +2,11 @@ import re
 
 env = Environment()
 
-def modify(target, source, env):
-    print('inside modify')
+def munge(target, source, env):
+    """
+    Obfuscate the string by making it an array of characters
+    and assigning each character to the array
+    """
     for (i,_s) in enumerate(source):
         with open(_s.abspath, 'r') as s:
             with open(target[i].abspath, 'w+') as t:
@@ -24,6 +27,6 @@ def modify(target, source, env):
 
 VariantDir('build', 'src')
 
-munge = env.Command(['build/munged_main.c'], 'build/main.c', [modify])
+munge = env.Command(['build/munged_main.c'], 'build/main.c', [munge])
 
 p = env.Program('main', munge)
