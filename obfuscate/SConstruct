@@ -24,7 +24,7 @@ def mudgeBuilder(target, source, env):
 def mudgeEmitter(target, source, env):
     actualTarget = []
     for s in source:
-        path = str(s.abspath)
+        path = s.abspath
         path = os.path.join(os.path.split(path)[0], 'munged/'+os.path.split(path)[1])
         actualTarget.append(path)
 

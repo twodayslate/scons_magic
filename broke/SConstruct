@@ -1,0 +1,11 @@
+env = Environment()
+
+env.VariantDir('build', 'src')
+
+def myAction(target, source, env):
+    print(target, source, env)
+    print(target[0].abspath)
+    with open(target[0].abspath, 'w+') as f:
+        f.write("Hello bdbaddog!\n")
+
+env.Command('${SOURCE.filebase}', 'build/main.c', myAction)
