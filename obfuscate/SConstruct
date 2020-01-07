@@ -25,7 +25,7 @@ def munge(target, source, env):
                     else:
                         t.write(line)
 
-VariantDir('build', 'src')
+env.VariantDir('build', 'src')
 
 munge = env.Command(['build/munged_main.c'], 'build/main.c', [munge])
 
