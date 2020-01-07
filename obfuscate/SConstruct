@@ -1,13 +1,7 @@
 import re
 import os
 
-env = Environment()
-
-def munge(target, source, env):
-    """
-    Obfuscate the string by making it an array of characters
-    and assigning each character to the array
-    """
+def mudgeBuilder(target, source, env):
     for (i,_s) in enumerate(source):
         with open(_s.abspath, 'r') as s:
             with open(target[i].abspath, 'w+') as t:
@@ -26,17 +20,21 @@ def munge(target, source, env):
                     else:
                         t.write(line)
 
-env.VariantDir('build', 'src')
 
-def genSources(target, source, env, for_signature):
+def mudgeEmitter(target, source, env):
     actualTarget = []
     for s in source:
         path = str(s.abspath)
-        path = os.path.join(os.path.split(path)[0], 'munged', os.path.split(path)[1])
+        path = os.path.join(os.path.split(path)[0], 'munged/'+os.path.split(path)[1])
         actualTarget.append(path)
 
-    return actualTarget
+    return actualTarget, source
 
-munge = env.Command('$SCONS_SOURCES', Glob('build/*.c'), munge, SCONS_SOURCES=genSources)
+bld = Builder(action=mudgeBuilder, emitter=mudgeEmitter)
+env = Environment(BUILDERS={'Munge': bld})
+
+env.VariantDir('build', 'src')
+
+munge = env.Munge(Glob('build/*.c'))
 
 p = env.Program('main', munge)
