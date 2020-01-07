@@ -1,4 +1,5 @@
 import re
+import os
 
 env = Environment()
 
@@ -27,6 +28,15 @@ def munge(target, source, env):
 
 env.VariantDir('build', 'src')
 
-munge = env.Command(['build/munged_main.c'], 'build/main.c', [munge])
+def genSources(target, source, env, for_signature):
+    actualTarget = []
+    for s in source:
+        path = str(s.abspath)
+        path = os.path.join(os.path.split(path)[0], 'munged', os.path.split(path)[1])
+        actualTarget.append(path)
+
+    return actualTarget
+
+munge = env.Command('$SCONS_SOURCES', Glob('build/*.c'), [munge], SCONS_SOURCES=genSources)
 
 p = env.Program('main', munge)
