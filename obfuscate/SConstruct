@@ -1,0 +1,34 @@
+import re
+
+env = Environment()
+
+def modify(target, source, env):
+    print('inside modify')
+    for (i,_s) in enumerate(source):
+        with open(_s.abspath, 'r') as s:
+            with open(target[i].abspath, 'w+') as t:
+                slines = s.readlines()
+                for line in slines:
+                    if "SCONS_OBFUSCATE" in line:
+                        r = r'(\s*).*\*(\w*).*SCONS_OBFUSCATE\(\"(.*)\"\);\s*'
+                        matches = re.search(r, line)
+                        spacing = matches.group(1)
+                        varname = matches.group(2)
+                        word = matches.group(3)
+                        t.write(spacing + 'char ' + varname + '[%d];\n' % (len(word)+1))
+                        for (index, letter) in enumerate(word):
+                            t.write('%s%s[%d] = \'%c\';\n' % (spacing, varname, index, letter))
+                        t.write('%s%s[%d] = 0;\n' % (spacing, varname, index+1))
+                    else:
+                        t.write(line)
+
+    return
+
+
+
+munge = env.Command('build/main.c', 'src/main.c', [modify])
+
+VariantDir('build', 'src')
+
+p = env.Program('main', 'build/main.c', emitter=modify)
+Depends(p, munge)
