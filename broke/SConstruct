@@ -8,4 +8,4 @@ def myAction(target, source, env):
     with open(target[0].abspath, 'w+') as f:
         f.write("Hello bdbaddog!\n")
 
-env.Command('${SOURCE.filebase}', 'build/main.c', myAction)
+env.Command('${SOURCE.base}', 'build/main.c', myAction)
